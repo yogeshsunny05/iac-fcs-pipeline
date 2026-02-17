@@ -1,9 +1,11 @@
 pipeline {
     agent any
+
     stages {
-        stage('Test FCS CLI') {
+        stage('Verify FCS CLI') {
             steps {
-                bat 'fcs health-check'
+                echo "Testing FCS CLI connectivity..."
+                bat '"C:\\FalconCLI\\fcs.exe" health-check'
             }
         }
     }
