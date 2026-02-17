@@ -1,6 +1,12 @@
 pipeline {
     agent any
 
+    environment {
+        FCS_CLIENT_ID     = credentials('fcs-client-id')
+        FCS_CLIENT_SECRET = credentials('fcs-client-secret')
+        FALCON_API_URL    = 'https://api.us-2.crowdstrike.com'
+    }
+
     stages {
         stage('Checkout Code') {
             steps {
@@ -11,9 +17,9 @@ pipeline {
             }
         }
 
-        stage('Run IaC Scan Test') {
+        stage('Run IaC Scan') {
             steps {
-                echo "Running IaC scan..."
+                echo "Running IaC scan using environment variables..."
                 bat '"C:\\FalconCLI\\fcs.exe" scan iac --path . --upload'
             }
         }
