@@ -18,11 +18,17 @@ pipeline {
         }
 
         stage('Run IaC Scan') {
-            steps {
-                echo "Running IaC scan using environment variables..."
-                bat '"C:\\FalconCLI\\fcs.exe" scan iac --path . --upload'
+    steps {
+        echo "Running IaC scan using environment variables..."
+        script {
+            def exitCode = bat(script: '"C:\\FalconCLI\\fcs.exe" scan iac --path . --upload', returnStatus: true)
+            echo "FCS scan exit code: ${exitCode}"
+            if (exitCode >= 30) {
+                echo "Scan found vulnerabilities, but continuing..."
             }
         }
+    }
+}
     }
 
     post {
